@@ -18,7 +18,7 @@ jobs:
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.3.0
         with:
-          dockerfile: ./docker/dockerfile
+          dockerfile: docker/dockerfile
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -33,7 +33,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t ${{ secrets.ECR_REPO_NAME }}:dev-latest ./docker
+            -t ${{ secrets.ECR_REPO_NAME }}:dev-latest docker
 
 
       - name: Tag image for ECR
