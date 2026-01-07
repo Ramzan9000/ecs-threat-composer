@@ -6,7 +6,7 @@ COPY app/threat-composer/. ./
 RUN yarn build
 
 
-FROM nginxinc/nginx-unprivileged
+FROM nginxinc/nginx-unprivileged:1.25.0-alpine
 
 # Copy build output
 COPY --from=builder /app/build /usr/share/nginx/html
