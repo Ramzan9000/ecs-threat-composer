@@ -1,0 +1,24 @@
+# ===============================
+# Node.js / App Config
+# ===============================
+NODE_ENV=development
+APP_PORT=8080
+APP_HOST=localhost
+
+# ===============================
+# Docker / Container Config
+# ===============================
+DOCKER_IMAGE_NAME=ecs-threat-composer
+DOCKER_CONTAINER_NAME=threat-composer
+
+# ===============================
+# AWS / Terraform Config
+# ===============================
+AWS_REGION=us-west-1           # dev default region
+
+# S3 bucket & DynamoDB for Terraform remote state (for dev)
+TF_STATE_BUCKET=my-tf-state-bucket
+TF_LOCK_TABLE=my-tf-lock-table
+
+# ECR repository name (dev)
+ECR_REPO_NAME=dev-thr-composer-repo

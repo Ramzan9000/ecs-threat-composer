@@ -1,0 +1,70 @@
+# =============================
+# Node.js
+# =============================
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# =============================
+# Build outputs
+# =============================
+dist/
+build/
+coverage/
+
+# =============================
+# Environment / Secrets
+# =============================
+.env
+.env.*
+!.env.example
+
+# =============================
+# Docker
+# =============================
+*.dockerignore
+docker-compose.yaml
+Dockerfile
+*.log
+*.pid
+tmp/
+temp/
+*.swp
+
+# =============================
+# Terraform
+# =============================
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+terraform.tfvars
+terraform.tfvars.json
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# =============================
+# Git
+# =============================
+.git
+.gitignore
+.gitmodules
+
+# =============================
+# OS / Editor junk
+# =============================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# =============================
+# Documentation / misc
+# =============================
+*.md

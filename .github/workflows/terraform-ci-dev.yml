@@ -1,0 +1,45 @@
+name: Terraform Apply (Dev)
+
+on:
+  push:
+    branches: [main1]
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.DEV_AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init \
+          -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+          -backend-config="key=dev/terraform.tfstate" \
+          -backend-config="region=${{ secrets.DEV_AWS_REGION }}" \
+          -backend-config="dynamodb_table=${{ secrets.TF_LOCK_TABLE }}"
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate -var-file=envs/dev/terraform.tfvars
+
+      - name: Terraform Plan
+        run: terraform plan -var-file=envs/dev/terraform.tfvars
+
+ #     - name: Terraform Apply
+ #       run: terraform apply -auto-approve -var-file=envs/dev/terraform.tfvars
