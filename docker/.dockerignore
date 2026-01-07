@@ -1,9 +1,7 @@
 # =============================
 # Git
 # =============================
-.git
 .gitignore
-.gitmodules
 
 # =============================
 # Terraform / Infrastructure
