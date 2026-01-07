@@ -48,5 +48,6 @@ jobs:
 
 #      - name: Push image to ECR
 #        run: |
-#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-${{ github.sha.substr(0, 7) }} 
+#          SHORT_SHA=${GITHUB_SHA::7}
+#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-$SHORT_SHA
 #          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest
