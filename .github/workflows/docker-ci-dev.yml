@@ -32,22 +32,15 @@ jobs:
 
       - name: Build Docker image
         run: |
-          SHORT_SHA=${GITHUB_SHA::7}
           docker build \
-            -t ${{ secrets.ECR_REPO_NAME }}:dev-$SHORT_SHA \
             -t ${{ secrets.ECR_REPO_NAME }}:dev-latest ./docker
 
 
       - name: Tag image for ECR
         run: |
-          SHORT_SHA=${GITHUB_SHA::7}
-          docker tag ${{ secrets.ECR_REPO_NAME }}:dev-$SHORT_SHA \
-            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-$SHORT_SHA
           docker tag ${{ secrets.ECR_REPO_NAME }}:dev-latest \
             ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest
 
 #      - name: Push image to ECR
 #        run: |
-#          SHORT_SHA=${GITHUB_SHA::7}
-#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-$SHORT_SHA
 #          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest
