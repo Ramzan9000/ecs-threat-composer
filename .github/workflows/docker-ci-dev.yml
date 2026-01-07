@@ -33,7 +33,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t ${{ secrets.ECR_REPO_NAME }}:dev-${{ github.sha[0:7] }} \
+            -t ${{ secrets.ECR_REPO_NAME }}:dev-${{ github.sha.substr(0, 7) }} \
             -t ${{ secrets.ECR_REPO_NAME }}:dev-latest ./docker
 
       - name: Tag image for ECR
