@@ -16,21 +16,10 @@ jobs:
           submodules: true
 
 
-# <<< TEMPORARY DEBUG STEP
-      - name: Check repo files
-        run: |
-          pwd
-          ls -l
-          ls -l docker
-
       - name: Lint Dockerfile
-        run: |
-         docker run --rm \
-            --entrypoint hadolint \
-            -v "$GITHUB_WORKSPACE:/work" \
-            -w /work \
-            hadolint/hadolint:latest \
-            docker/Dockerfile
+        uses: hadolint/hadolint-action@v2
+        with:
+          dockerfile: ./docker/Dockerfile
 
 
       - name: Configure AWS Credentials
@@ -46,7 +35,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t ${{ secrets.ECR_REPO_NAME }}:dev-latest ./docker
+            -t ${{ secrets.ECR_REPO_NAME }}:dev-latest .
 
 
       - name: Tag image for ECR
