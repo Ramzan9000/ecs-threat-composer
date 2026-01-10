@@ -15,6 +15,14 @@ jobs:
         with:
           submodules: true
 
+
+# <<< TEMPORARY DEBUG STEP
+      - name: Check repo files
+        run: |
+          pwd
+          ls -l
+          ls -l docker
+
       - name: Lint Dockerfile
         run: |
          docker run --rm \
