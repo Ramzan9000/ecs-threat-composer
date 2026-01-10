@@ -17,11 +17,12 @@ jobs:
 
       - name: Lint Dockerfile
         run: |
-         docker run --rm -i \
-           -v ${{ github.workspace }}:/workspace \
-           -w /workspace \
-           hadolint/hadolint:latest \
-           hadolint docker/Dockerfile
+         docker run --rm \
+          -v "$GITHUB_WORKSPACE:/work" \
+          -w /work \
+          hadolint/hadolint \
+          docker/Dockerfile
+
 
 
       - name: Configure AWS Credentials
