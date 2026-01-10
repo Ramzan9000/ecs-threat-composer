@@ -2,7 +2,7 @@ name: Terraform Apply (Dev)
 
 on:
   push:
-    branches: [main1]
+    branches: [dev]
   workflow_dispatch:
 
 jobs:

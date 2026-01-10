@@ -16,7 +16,7 @@ jobs:
           submodules: true
 
       - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@v2
+        uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: ./docker/Dockerfile
 
@@ -33,17 +33,17 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t ${{ secrets.ECR_REPO_NAME }}:prod-${{ github.sha[0:7] }} \
             -t ${{ secrets.ECR_REPO_NAME }}:prod-latest ./docker
+            -f docker/Dockerfile \
+            .
+
+
 
       - name: Tag image for ECR
         run: |
-          docker tag ${{ secrets.ECR_REPO_NAME }}:prod-${{ github.sha[0:7] }} \
-            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.PROD_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:prod-${{ github.sha[0:7] }}
-          docker tag ${{ secrets.ECR_REPO_NAME }}:prod-latest \
-            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.PROD_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:prod-latest
+           docker tag ${{ secrets.ECR_REPO_NAME }}:prod-latest \
+            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:prod-latest
 
 #      - name: Push image to ECR
 #        run: |
-#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.PROD_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:prod-${{ github.sha[0:7] }}
-#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.PROD_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:prod-latest
+#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest
