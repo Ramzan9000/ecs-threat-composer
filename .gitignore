@@ -35,10 +35,7 @@ temp/
 # =============================
 *.tfstate
 *.tfstate.*
-*.tfvars
 .terraform/
-terraform.tfvars
-terraform.tfvars.json
 crash.log
 override.tf
 override.tf.json
