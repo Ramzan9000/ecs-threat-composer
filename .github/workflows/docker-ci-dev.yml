@@ -20,8 +20,8 @@ jobs:
          docker run --rm -i \
            -v ${{ github.workspace }}:/workspace \
            -w /workspace \
-           hadolint/hadolint \
-           docker/Dockerfile
+           hadolint/hadolint:latest \
+           hadolint docker/Dockerfile
 
 
       - name: Configure AWS Credentials
