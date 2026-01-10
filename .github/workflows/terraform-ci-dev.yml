@@ -42,7 +42,7 @@ jobs:
         run: terraform -chdir=infa/terraform/envs/dev validate 
 
       - name: Terraform Plan
-        run: terraform -chdir=infa/terraform/envs/dev plan -var-file=terraform/envs/dev/terraform.tfvars -out=tfplan
+        run: terraform -chdir=infa/terraform/envs/dev plan -var-file=terraform.tfvars -out=tfplan
 
  #     - name: Terraform Apply
- #       run: terraform apply -auto-approve -var-file=envs/dev/terraform.tfvars
+ #       run: terraform -chdir=infa/terraform/envs/dev apply -auto-approve tfplan
