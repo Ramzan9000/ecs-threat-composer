@@ -18,7 +18,7 @@ jobs:
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.3.0
         with:
-          dockerfile: ./docker/Dockerfile
+          dockerfile: docker/Dockerfile
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
