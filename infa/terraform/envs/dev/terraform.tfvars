@@ -68,8 +68,9 @@ alb_listener_http_protocol = "HTTP"
 #-----------------
 
 domain_name = "threat-composer.com"
-zone_id     = " "
 record_name = "www.threat-composer.com"
+record_type = "A"
+records     = ["1,2,3,4"]
 ttl         = 300
 
 

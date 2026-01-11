@@ -131,7 +131,6 @@ variable "alb_listener_http_protocol" {
 # ----------------------
 
 variable "domain_name" {}
-variable "zone_id" {}
 
 # ----------------------
 # route53
@@ -141,3 +140,6 @@ variable "record_name" {}
 variable "ttl" {
   default = 300
 }
+variable "records" {}
+variable "record_type" {}
+

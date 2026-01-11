@@ -140,9 +140,8 @@ output "domain_name" {
   description = "The domain name for ACM/Route53"
 }
 
-output "zone_id" {
-  value       = "Z123456789EXAMPLE"
-  description = "The Route53 hosted zone ID for the domain"
+output "route53_zone_id" {
+  value = module.route53.zone_id
 }
 
 output "record_name" {

@@ -100,13 +100,12 @@ module "alb" {
 # ACM
 # ----------------------
 
-module "acm" {
-  source = "../../modules/acm"
-
-  domain_name = var.domain_name
-  zone_id     = var.zone_id
-  tags        = var.tags
-}
+# module "acm" {
+#  source = "../../modules/acm"
+#  zone_id     = module.route53.zone_id 
+#  domain_name = var.domain_name
+#  tags        = var.tags
+# }
 
 # ----------------------
 # Route53
@@ -114,9 +113,9 @@ module "acm" {
 
 module "route53" {
   source = "../../modules/route53"
-
-  zone_id     = var.zone_id
+  domain_name = var.domain_name
   record_name = var.record_name
+  record_type = var.record_type
   ttl         = var.ttl
   records     = [module.alb.alb_dns_name] # dynamic from ALB module
 }
