@@ -1,21 +1,34 @@
-FROM node:20-alpine AS builder
+# -----------------------
+# Stage 1: Build Frontend
+# -----------------------
+FROM node:20-alpine AS frontend-builder
 WORKDIR /app
+# Copy frontend package files
 COPY app/threat-composer/package.json app/threat-composer/yarn.lock ./
 RUN yarn install --frozen-lockfile
+# Copy frontend source
 COPY app/threat-composer/. ./
 RUN yarn build
 
+# -----------------------
+# Stage 2: Build Backend
+# -----------------------
+FROM node:22-alpine AS backend-builder
+WORKDIR /app
+# Copy backend package files and install
+COPY app/backend/package*.json ./
+RUN npm install --production
+# Copy backend source
+COPY app/backend/. ./
+# Copy frontend build into backend for serving
+COPY --from=frontend-builder /app/build /app/public
 
-FROM nginxinc/nginx-unprivileged:1.25.0-alpine
-
-# Copy build output
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Copy Nginx config (make sure it doesn’t require root-only paths)
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 8080
-
-CMD ["nginx", "-g", "daemon off;"]
-
-
+# -----------------------
+# Stage 3: Runtime
+# -----------------------
+FROM node:22-alpine
+WORKDIR /app
+# Copy built backend + frontend
+COPY --from=backend-builder /app /app
+EXPOSE 80
+CMD ["node", "lib/index.js"]
