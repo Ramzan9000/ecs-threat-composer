@@ -8,9 +8,6 @@
 - [Application](#application)
 - [Deployment](#deployment)
 - [Testing](#testing)
-- [Authors](#authors)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
 
 ## Project Overview
 
@@ -268,8 +265,9 @@ curl http://localhost:3000/health
 ````
 
 #### You should see:
-```bash
+
 {"status":"UP"}
-```` 
+
+
 
 
