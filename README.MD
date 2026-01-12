@@ -13,9 +13,25 @@
 - [Acknowledgments](#acknowledgments)
 
 ## Project Overview
-Brief description of what the project does and why it exists. - pic 
+
+This project deploys Threat Composer, a containerized application, on AWS ECS Fargate using Terraform.
+
+Key features:
+
+* Containerized deployment using Docker
+
+* ECS Fargate for serverless container execution
+
+* Public-facing Application Load Balancer (ALB) routing to ECS tasks
+
+* Infrastructure as code with reusable Terraform modules
+
+* CI/CD pipeline with GitHub Actions for automated builds and pushes
+
+* AWS infrastructure includes VPC, NAT Gateway, ALB, ECS, ECR, IAM roles, Security Groups
 
 ## Architecture
+-pic
 
 High-level Traffic Flow
 
@@ -32,6 +48,7 @@ High-level Traffic Flow
 
 ## Folder Structure
 -pic 
+
 
 
 
