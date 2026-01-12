@@ -7,7 +7,7 @@
 - [Infrastructure](#infrastructure)
 - [Application](#application)
 - [Deployment](#deployment)
-- [Testing](#Testlocally)
+- [Testing](#running-locally)
 
 ## Project Overview
 
@@ -267,6 +267,7 @@ curl http://localhost:3000/health
 #### You should see:
 
 {"status":"UP"}
+
 
 
 
