@@ -12,7 +12,7 @@
 - [Notes](#Notes)
 - [Authors](#Authors)
 - [Version history](#Version-history)
-- [Acknowledgments](#acknowledgements)
+- [Acknowledgments](#Acknowledgments)
 
 ## Project Overview
 
@@ -301,7 +301,7 @@ curl http://localhost:8080/health
 
 
 
-### Help
+## Help
 
 * If the Docker port is already in use:
 
@@ -314,7 +314,7 @@ kill -9 <PID>
 
 
 
-### Notes
+## Notes
 
 * Ensure Terraform remote state bucket exists if using S3 backend
 
@@ -330,7 +330,7 @@ kill -9 <PID>
 
 
 
-### Authors
+## Authors
 
 * Ramzan [Your Contact/LinkedIn]
 
@@ -343,7 +343,7 @@ kill -9 <PID>
 
 
 
-### Version History
+## Version History
 
 * 0.2 – Added ECS service, ALB, IAM roles, ECR repository
 
@@ -361,7 +361,7 @@ kill -9 <PID>
 
 
 
-### Acknowledgments
+## Acknowledgments
 
 * AWS Documentation for ECS, ECR, ALB
 
@@ -370,6 +370,7 @@ kill -9 <PID>
 * Docker Official Documentation
 
 * Inspiration from containerized application deployment best practices
+
 
 
 
