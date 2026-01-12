@@ -8,6 +8,11 @@
 - [Application](#application)
 - [Deployment](#deployment)
 - [Testing](#running-locally)
+- [Help](#Help)
+- [Notes](#Notes)
+- [Authors](#Authors)
+- [Version history](#Version-history)
+- [Acknowledgments](#acknowledgements)
 
 ## Project Overview
 
@@ -290,6 +295,12 @@ curl http://localhost:8080/health
 
 
 
+
+
+
+
+
+
 ### Help
 
 * If the Docker port is already in use:
@@ -299,9 +310,22 @@ lsof -i :8080
 kill -9 <PID>
 ````
 
-Ensure Terraform remote state bucket exists if using S3 backend
 
-ACM and Route53 modules are optional; comment them out if you don’t have a domain
+
+
+
+### Notes
+
+* Ensure Terraform remote state bucket exists if using S3 backend
+
+* ACM and Route53 modules are optional; comment them out if you don’t have a domain
+
+
+
+
+
+
+
 
 
 
@@ -314,6 +338,11 @@ ACM and Route53 modules are optional; comment them out if you don’t have a dom
 
 
 
+
+
+
+
+
 ### Version History
 
 * 0.2 – Added ECS service, ALB, IAM roles, ECR repository
@@ -323,9 +352,11 @@ ACM and Route53 modules are optional; comment them out if you don’t have a dom
 
 
 
-### License
 
-* This project is licensed under the MIT License – see the LICENSE.md file for details
+
+
+
+
 
 
 
@@ -339,6 +370,7 @@ ACM and Route53 modules are optional; comment them out if you don’t have a dom
 * Docker Official Documentation
 
 * Inspiration from containerized application deployment best practices
+
 
 
 
