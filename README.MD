@@ -245,7 +245,7 @@ terraform apply -auto-approve
 ### Running Locally
 You can run the Node.js app locally using Docker to test your setup before deploying to AWS:
 
-#### 1. Build the Docker image
+#### 1. Build the Docker image
 
 ```bash
 cd app
@@ -267,6 +267,7 @@ curl http://localhost:3000/health
 #### You should see:
 
 {"status":"UP"}
+
 
 
 
