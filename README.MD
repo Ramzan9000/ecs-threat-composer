@@ -63,7 +63,7 @@ High-level Traffic Flow
 ## Infrastructure
 
 
-Terraform Modules
+### Terraform Modules
 
 * ACM: SSL/TLS certificate management for secure traffic
 
@@ -84,3 +84,13 @@ Terraform Modules
 * Modules make the infrastructure modular, reusable, and maintainable.
 
 
+
+## Application
+
+Dockerfile & docker-compose.yaml: Builds and runs the Node.js app container
+
+app/threat-composer/: Main application code
+
+app/backend/: Backend logic with lib/index.js and Node.js dependencies
+
+Docker images are built and pushed to ECR via GitHub Actions, using commit SHA tags for versioning.
