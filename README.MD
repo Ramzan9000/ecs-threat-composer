@@ -48,4 +48,51 @@ High-level Traffic Flow
 
 ## Folder Structure
 
+- .github/
+  - workflows/
+    - docker-ci-dev.yml
+    - docker-ci-prod.yml
+    - terraform-ci-dev.yml
+    - terraform-ci-prod.yml
+- app/
+  - backend/
+    - lib/
+      - index.js
+    - node_modules/
+    - package-lock.json
+    - package.json
+  - threat-composer/
+    - [all app code]
+- docker/
+  - .dockerignore
+  - docker-compose.yaml
+  - Dockerfile
+- infra/
+  - terraform/
+    - backend.tf
+    - envs/
+      - dev/
+        - main.tf
+        - variables.tf
+        - outputs.tf
+        - provider.tf
+        - terraform.tfvars
+      - prod/
+        - main.tf
+        - variables.tf
+        - outputs.tf
+        - provider.tf
+        - terraform.tfvars
+    - modules/
+      - acm/
+        - main.tf
+        - variables.tf
+        - outputs.tf
+      - alb/
+        - submodules/
+          - listener/
+            - main.tf
+            - variables.tf
+            - outputs.tf
+          - target_grou_
 
