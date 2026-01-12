@@ -123,8 +123,11 @@ Docker images are built and pushed to ECR via GitHub Actions, using commit SHA t
 
 * Allows you to destroy resources safely if needed
 
+### Manual Terraform Commands
+
 ```bash
-cd app
-docker build -t threat-composer-local:latest .
-docker run -d -p 3000:3000 threat-composer-local:latest
+cd infra/terraform/envs/dev   # or prod
+terraform init
+terraform plan
+terraform apply -auto-approve
 
