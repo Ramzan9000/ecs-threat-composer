@@ -18,7 +18,7 @@ This project deploys Threat Composer, a containerized application, on AWS ECS Fa
 
 Key features:
 
-* Containerized deployment using Docker
+*Containerized deployment using Docker
 
 * ECS Fargate for serverless container execution
 
@@ -48,6 +48,7 @@ High-level Traffic Flow
 
 ## Folder Structure
 -pic 
+
 
 
 
