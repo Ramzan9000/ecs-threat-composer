@@ -167,7 +167,7 @@ infra/
 README.md
 screenshots/
 
-```bash
+'''
 
 
 
@@ -271,5 +271,6 @@ curl http://localhost:3000/health
 #### You should see:
 ```bash
 {"status":"UP"}
+
 
 
