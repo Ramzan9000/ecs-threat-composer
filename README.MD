@@ -94,3 +94,37 @@ app/threat-composer/: Main application code
 app/backend/: Backend logic with lib/index.js and Node.js dependencies
 
 Docker images are built and pushed to ECR via GitHub Actions, using commit SHA tags for versioning
+
+
+
+## Deployment
+
+### CI/CD Pipeline
+
+#### CI Workflow (docker-ci-dev.yml / docker-ci-prod.yml)
+
+1. Checks out code from the repository
+
+2. Builds Docker image from /app
+
+3. Scans image for vulnerabilities
+
+4. Pushes Docker image to ECR
+
+#### CD Workflow (terraform-ci-dev.yml / terraform-ci-prod.yml)
+
+1. Runs Terraform plan and apply for infrastructure changes
+
+2. Updates ECS service with new Docker image (commit SHA)
+
+3. Performs zero-downtime deployments via ECS Fargate
+
+#### Optional: Manual Destroy (manual-destroy.yml)
+
+* Allows you to destroy resources safely if needed
+
+```bash
+cd app
+docker build -t threat-composer-local:latest .
+docker run -d -p 3000:3000 threat-composer-local:latest
+
