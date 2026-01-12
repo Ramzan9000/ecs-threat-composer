@@ -279,7 +279,7 @@ docker run -d -p 8080:80 threat-composer-local:latest
 #### 3. Test Locally
 
 ```bash
-curl http://localhost:3000/health
+curl http://localhost:8080/health
 ````
 
 #### You should see:
@@ -288,27 +288,11 @@ curl http://localhost:3000/health
 
 
 
-#### Push Docker image to ECR:
-
-```bash
-aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.eu-west-2.amazonaws.com
-docker tag threatmod:latest <account-id>.dkr.ecr.eu-west-2.amazonaws.com/dev-thr-composer-repo:latest
-docker push <account-id>.dkr.ecr.eu-west-2.amazonaws.com/dev-thr-composer-repo:latest
-````
-
-
-
-
-
-
-
-
-
 
 
 ### Help
 
-If the Docker port is already in use:
+* If the Docker port is already in use:
 
 ```bash
 lsof -i :8080
@@ -324,38 +308,38 @@ ACM and Route53 modules are optional; comment them out if you don’t have a dom
 
 ### Authors
 
-Ramzan [Your Contact/LinkedIn]
+* Ramzan [Your Contact/LinkedIn]
 
-GitHub: https://github.com/<your-username>
-
+* GitHub: https://github.com/Ramzan9000
 
 
 
 ### Version History
 
-0.2 – Added ECS service, ALB, IAM roles, ECR repository
+* 0.2 – Added ECS service, ALB, IAM roles, ECR repository
 
-0.1 – Initial Terraform and Docker setup
+* 0.1 – Initial Terraform and Docker setup
 
 
 
 
 ### License
 
-This project is licensed under the MIT License – see the LICENSE.md file for details
+* This project is licensed under the MIT License – see the LICENSE.md file for details
 
 
 
 
 ### Acknowledgments
 
-AWS Documentation for ECS, ECR, ALB
+* AWS Documentation for ECS, ECR, ALB
 
-Terraform AWS Provider Docs
+* Terraform AWS Provider Docs
 
-Docker Official Documentation
+* Docker Official Documentation
 
-Inspiration from containerized application deployment best practices
+* Inspiration from containerized application deployment best practices
+
 
 
 
