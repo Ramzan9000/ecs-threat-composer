@@ -28,7 +28,25 @@ Key features:
 * AWS infrastructure includes VPC, NAT Gateway, ALB, ECS, ECR, IAM roles, Security Groups
 
 ## Architecture
--pic
+
+Here’s the overview of the project infrastructure:
+
+![Project Architecture](screenshots/architecture.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 High-level Traffic Flow
 
@@ -267,6 +285,7 @@ curl http://localhost:3000/health
 #### You should see:
 
 {"status":"UP"}
+
 
 
 
