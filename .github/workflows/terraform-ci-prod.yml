@@ -2,7 +2,7 @@ name: Terraform Apply (Prod)
 
 on:
   push:
-    branches: [main1]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -15,12 +15,14 @@ jobs:
         with:
           submodules: true
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+    
+      # --- OIDC login ---
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.PROD_AWS_REGION }}
+          role-to-assume: arn:aws:iam::557690622944:role/github-actions-role
+          aws-region: ${{ secrets.DEV_AWS_REGION }}
+
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
