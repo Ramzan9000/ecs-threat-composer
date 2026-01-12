@@ -49,7 +49,18 @@ High-level Traffic Flow
 ## Folder Structure
 
 
-##Infrastructure
+
+
+
+
+
+
+
+
+
+
+
+## Infrastructure
 
 
 Terraform Modules
@@ -71,3 +82,4 @@ Terraform Modules
 *VPC: Public and private subnets, NAT Gateway, internet gateway, and route tables for secure and structured networking
 
 *Modules make the infrastructure modular, reusable, and maintainable.
+
