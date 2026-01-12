@@ -19,20 +19,18 @@ Brief description of what the project does and why it exists. - pic
 
 High-level Traffic Flow
 
-. ALB: Public-facing load balancer routing traffic to ECS tasks
+* ALB: Public-facing load balancer routing traffic to ECS tasks
 
-. ECS Tasks: Runs threat-composer Docker containers in private subnets
+ECS Tasks: Runs threat-composer Docker containers in private subnets
 
-. NAT Gateway: Provides outbound internet access for ECS tasks
+NAT Gateway: Provides outbound internet access for ECS tasks
 
-. ECR: Stores Docker images for deployment
+ECR: Stores Docker images for deployment
 
-. Terraform Modules: Modular, reusable infrastructure for maintainability
-
-
-
+Terraform Modules: Modular, reusable infrastructure for maintainability
 
 
 ## Folder Structure
 -pic 
+
 
