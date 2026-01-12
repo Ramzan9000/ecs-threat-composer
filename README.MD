@@ -65,21 +65,22 @@ High-level Traffic Flow
 
 Terraform Modules
 
-*ACM: SSL/TLS certificate management for secure traffic
+* ACM: SSL/TLS certificate management for secure traffic
 
-*ALB: Application Load Balancer with listeners and target groups to route traffic to ECS tasks
+* ALB: Application Load Balancer with listeners and target groups to route traffic to ECS tasks
 
-*ECR: Docker image repository for storing your Node app images
+* ECR: Docker image repository for storing your Node app images
 
-*ECS: Cluster with services and task definitions running your Node application
+* ECS: Cluster with services and task definitions running your Node application
 
-*IAM: Roles for ECS tasks and ALB to control access and permissions
+* IAM: Roles for ECS tasks and ALB to control access and permissions
 
-*Route 53: DNS records pointing your domain/subdomain to the ALB
+* Route 53: DNS records pointing your domain/subdomain to the ALB
 
-*Security Groups: Network access management for ALB and ECS tasks
+* Security Groups: Network access management for ALB and ECS tasks
 
-*VPC: Public and private subnets, NAT Gateway, internet gateway, and route tables for secure and structured networking
+* VPC: Public and private subnets, NAT Gateway, internet gateway, and route tables for secure and structured networking
 
-*Modules make the infrastructure modular, reusable, and maintainable.
+* Modules make the infrastructure modular, reusable, and maintainable.
+
 
