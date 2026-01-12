@@ -166,9 +166,7 @@ infra/
 .gitmodules
 README.md
 screenshots/
-
-'''
-
+```` 
 
 
 
@@ -245,6 +243,7 @@ cd infra/terraform/envs/dev   # or prod
 terraform init
 terraform plan
 terraform apply -auto-approve
+```` 
 
 ### Running Locally
 You can run the Node.js app locally using Docker to test your setup before deploying to AWS:
@@ -254,23 +253,23 @@ You can run the Node.js app locally using Docker to test your setup before deplo
 ```bash
 cd app
 docker build -t threat-composer-local:latest .
-
+```` 
 
 #### 2. Run Container
 
 ```bash
 docker run -d -p 8080:80 threat-composer-local:latest
-
+```` 
 
 #### 3. Test Locally
 
 ```bash
 curl http://localhost:3000/health
-
+````
 
 #### You should see:
 ```bash
 {"status":"UP"}
-
+```` 
 
 
