@@ -93,4 +93,4 @@ app/threat-composer/: Main application code
 
 app/backend/: Backend logic with lib/index.js and Node.js dependencies
 
-Docker images are built and pushed to ECR via GitHub Actions, using commit SHA tags for versioning.
+Docker images are built and pushed to ECR via GitHub Actions, using commit SHA tags for versioning
