@@ -48,8 +48,124 @@ High-level Traffic Flow
 
 ## Folder Structure
 
+```bash
+.github/
+└── workflows/
+    ├── docker-ci-dev.yml
+    ├── docker-ci-prod.yml
+    ├── terraform-ci-dev.yml
+    └── terraform-ci-prod.yml
 
+app/
+├── backend/
+│   ├── lib/
+│   │   └── index.js
+│   ├── node_modules/
+│   ├── package-lock.json
+│   └── package.json
+├── threat-composer/
+│   └── [all app code copied from original repo]
+│
+docker/
+├── .dockerignore
+├── docker-compose.yaml
+└── Dockerfile
 
+infra/
+├── terraform/
+│   ├── backend.tf
+│   ├── envs/
+│   │   ├── dev/
+│   │   │   ├── main.tf
+│   │   │   ├── variables.tf
+│   │   │   ├── outputs.tf
+│   │   │   ├── provider.tf
+│   │   │   └── terraform.tfvars
+│   │   └── prod/
+│   │       ├── main.tf
+│   │       ├── variables.tf
+│   │       ├── outputs.tf
+│   │       ├── provider.tf
+│   │       └── terraform.tfvars
+│   └── modules/
+│       ├── acm/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       ├── alb/
+│       │   └── submodules/
+│       │       ├── listener/
+│       │       │   ├── main.tf
+│       │       │   ├── variables.tf
+│       │       │   └── outputs.tf
+│       │       └── target_group/
+│       │           ├── main.tf
+│       │           ├── variables.tf
+│       │           └── outputs.tf
+│       ├── ecr/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       ├── ecs/
+│       │   └── submodules/
+│       │       ├── service/
+│       │       │   ├── main.tf
+│       │       │   ├── variables.tf
+│       │       │   └── outputs.tf
+│       │       └── task_definition/
+│       │           ├── main.tf
+│       │           ├── variables.tf
+│       │           └── outputs.tf
+│       ├── iam/
+│       │   └── submodules/
+│       │       ├── alb_role/
+│       │       │   ├── main.tf
+│       │       │   ├── variables.tf
+│       │       │   └── outputs.tf
+│       │       ├── ecs_execution_role/
+│       │       │   ├── main.tf
+│       │       │   ├── variables.tf
+│       │       │   └── outputs.tf
+│       │       └── ecs_task_role/
+│       │           ├── main.tf
+│       │           ├── variables.tf
+│       │           └── outputs.tf
+│       ├── route53/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       ├── security_groups/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       └── vpc/
+│           └── submodules/
+│               ├── internet_gateway/
+│               │   ├── main.tf
+│               │   ├── variables.tf
+│               │   └── outputs.tf
+│               ├── nat_gateway/
+│               │   ├── main.tf
+│               │   ├── variables.tf
+│               │   └── outputs.tf
+│               ├── private_subnet/
+│               │   ├── main.tf
+│               │   ├── variables.tf
+│               │   └── outputs.tf
+│               ├── public_subnet/
+│               │   ├── main.tf
+│               │   ├── variables.tf
+│               │   └── outputs.tf
+│               └── route_tables/
+│                   ├── main.tf
+│                   ├── variables.tf
+│                   └── outputs.tf
+
+.envs
+.gitignore
+.gitmodules
+README.md
+screenshots/
 
 
 
@@ -130,4 +246,30 @@ cd infra/terraform/envs/dev   # or prod
 terraform init
 terraform plan
 terraform apply -auto-approve
+
+### Running Locally
+You can run the Node.js app locally using Docker to test your setup before deploying to AWS:
+
+#### 1. Build the Docker image
+
+```bash
+cd app
+docker build -t threat-composer-local:latest .
+
+
+#### 2. Run Container
+
+```bash
+docker run -d -p 8080:80 threat-composer-local:latest
+
+
+#### 3. Test Locally
+
+```bash
+curl http://localhost:3000/health
+
+
+#### You should see:
+```bash
+{"status":"UP"}
 
