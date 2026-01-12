@@ -135,19 +135,14 @@ output "target_group_arn" {
 #  acm & route53
 # ----------------------
 
-output "domain_name" {
-  value       = "threat-composer.com"
-  description = "The domain name for ACM/Route53"
-}
+# output "dns_name" {
+#   description = "DNS name of the application"
+#   value       = module.route53.record_fqdn
+# }
 
-output "zone_id" {
-  value       = "Z123456789EXAMPLE"
-  description = "The Route53 hosted zone ID for the domain"
-}
 
-output "record_name" {
-  value       = "www.threat-composer.com"
-  description = "The DNS record name for the domain"
-}
-
+# output "acm_certificate_arn" {
+#   description = "ARN of the ACM certificate"
+#   value       = module.acm.certificate_arn
+# }
 

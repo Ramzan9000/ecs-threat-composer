@@ -130,16 +130,43 @@ variable "alb_listener_http_protocol" {
 #  acm 
 # ----------------------
 
-variable "domain_name" {}
+variable "domain_name" {
+  description = "Domain name for ACM certificate"
+  type        = string
+  default     = null
+}
 
 # ----------------------
 # route53
 # ----------------------
 
-variable "record_name" {}
+
+variable "zone_id" {
+  description = "Existing Route53 hosted zone ID"
+  type        = string
+  default     = null
+}
+
+variable "record_name" {
+  description = "DNS record name (e.g. www.example.com)"
+  type        = string
+  default     = null
+}
+
+# TTL for Route53 record
 variable "ttl" {
+  type    = number
   default = 300
 }
-variable "records" {}
-variable "record_type" {}
 
+# ALB Zone ID for Route53 alias
+variable "alb_zone_id" {
+  type    = string
+  default = ""
+}
+
+variable "alb_dns_name" {
+  type    = string
+  default = ""
+  description = "DNS name of the ALB (for Route53 alias record)"
+}

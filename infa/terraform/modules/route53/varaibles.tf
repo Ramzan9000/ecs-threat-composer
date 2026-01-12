@@ -1,11 +1,19 @@
-variable "zone_id" {}
-variable "record_name" {}
-variable "record_type" {
-  default = "A"
+variable "zone_id" {
+  description = "ID of an existing Route53 hosted zone"
+  type        = string
 }
-variable "ttl" {
-  default = 300
+
+variable "record_name" {
+  description = "DNS record name (e.g. www.example.com)"
+  type        = string
 }
-variable "records" {
-  type = list(string)
+
+variable "alb_dns_name" {
+  description = "DNS name of the Application Load Balancer"
+  type        = string
+}
+
+variable "alb_zone_id" {
+  description = "Route53 zone ID of the ALB"
+  type        = string
 }

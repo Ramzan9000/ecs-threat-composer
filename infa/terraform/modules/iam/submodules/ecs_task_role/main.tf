@@ -14,5 +14,5 @@ resource "aws_iam_role" "this" {
 
 resource "aws_iam_role_policy_attachment" "ecs_task_policy" {
   role       = aws_iam_role.this.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerServiceFullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
 }

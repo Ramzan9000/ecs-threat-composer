@@ -44,6 +44,6 @@ jobs:
            docker tag ${{ secrets.ECR_REPO_NAME }}:prod-latest \
             ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:prod-latest
 
-#      - name: Push image to ECR
-#        run: |
-#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest
+      - name: Push image to ECR
+        run: |
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest

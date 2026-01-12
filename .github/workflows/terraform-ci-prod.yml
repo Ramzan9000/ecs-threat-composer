@@ -44,5 +44,11 @@ jobs:
       - name: Terraform Plan
         run: terraform -chdir=infa/terraform/envs/prod plan -var-file=terraform.tfvars -out=tfplan
 
-#      - name: Terraform Apply
-#        run: terraform -chdir=infa/terraform/envs/prod apply -auto-approve tfplan
+      - name: Terraform Apply
+        run: terraform -chdir=infa/terraform/envs/prod apply -auto-approve tfplan
+
+      - name: Wait 2 minutes
+        run: sleep 120   # 120 seconds = 2 minutes
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve

@@ -1,6 +1,15 @@
-variable "domain_name" {}
-variable "zone_id" {}
+variable "domain_name" {
+  description = "Domain name for the ACM certificate"
+  type        = string
+}
+
+variable "zone_id" {
+  description = "Route53 hosted zone ID for DNS validation"
+  type        = string
+}
+
 variable "tags" {
-  type = map(string)
-  default = {}
+  description = "Tags to apply to the ACM certificate"
+  type        = map(string)
+  default     = {}
 }
