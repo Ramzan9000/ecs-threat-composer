@@ -288,6 +288,78 @@ curl http://localhost:3000/health
 
 
 
+#### Push Docker image to ECR:
+
+```bash
+aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.eu-west-2.amazonaws.com
+docker tag threatmod:latest <account-id>.dkr.ecr.eu-west-2.amazonaws.com/dev-thr-composer-repo:latest
+docker push <account-id>.dkr.ecr.eu-west-2.amazonaws.com/dev-thr-composer-repo:latest
+````
+
+
+
+
+
+
+
+
+
+
+
+### Help
+
+If the Docker port is already in use:
+
+```bash
+lsof -i :8080
+kill -9 <PID>
+````
+
+Ensure Terraform remote state bucket exists if using S3 backend
+
+ACM and Route53 modules are optional; comment them out if you don’t have a domain
+
+
+
+
+### Authors
+
+Ramzan [Your Contact/LinkedIn]
+
+GitHub: https://github.com/<your-username>
+
+
+
+
+### Version History
+
+0.2 – Added ECS service, ALB, IAM roles, ECR repository
+
+0.1 – Initial Terraform and Docker setup
+
+
+
+
+### License
+
+This project is licensed under the MIT License – see the LICENSE.md file for details
+
+
+
+
+### Acknowledgments
+
+AWS Documentation for ECS, ECR, ALB
+
+Terraform AWS Provider Docs
+
+Docker Official Documentation
+
+Inspiration from containerized application deployment best practices
+
+
+
+
 
 
 
