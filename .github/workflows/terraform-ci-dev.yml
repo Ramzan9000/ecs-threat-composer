@@ -2,7 +2,7 @@ name: Terraform Apply (Dev)
 
 on:
   push:
-    branches: [main]
+    branches: [main1]
   workflow_dispatch:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::557690622944:role/github-actions-role
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.DEV_AWS_REGION }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
