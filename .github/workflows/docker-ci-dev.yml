@@ -2,7 +2,7 @@ name: Build and Push Docker Image (Dev)
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   workflow_dispatch:
 
 

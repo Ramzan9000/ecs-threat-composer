@@ -2,8 +2,15 @@ name: Terraform Apply (Dev)
 
 on:
   push:
-    branches: [main1]
+    branches: [dev]
   workflow_dispatch:
+
+
+permissions:
+  id-token: write
+  contents: read
+
+
 
 jobs:
   terraform:
@@ -48,7 +55,7 @@ jobs:
         run: terraform -chdir=infa/terraform/envs/dev apply -auto-approve tfplan
 
       - name: Wait 2 minutes
-        run: sleep 120   # 120 seconds = 2 minutes
+        run: sleep 180   # 180 seconds = 3 minutes
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
