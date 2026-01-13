@@ -15,6 +15,9 @@ permissions:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    outputs:
+      ecr_repo_url: ${{ steps.terraform.outputs.ecr_repo_url }}
+
 
     steps:
       - name: Checkout code
@@ -50,9 +53,22 @@ jobs:
         working-directory: infra/terraform/envs/dev
         run: terraform plan -out=tfplan
 
+      
       - name: Terraform Apply (DEV auto-approve)
         working-directory: infra/terraform/envs/dev
-        run: terraform apply -auto-approve tfplan
+        id: terraform
+        run: |
+          terraform apply -auto-approve tfplan
+          # Captured the ECR repository URL
+          echo "ecr_repo_url=$(terraform output -raw ecr_repo_url)" >> $GITHUB_OUTPUT
+          # Saved as artifact so Docker workflow can use it
+          terraform output -raw ecr_repo_url > ecr_repo_url.txt
+
+      - name: Upload ECR URL artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ecr-url
+          path: infra/terraform/envs/dev/ecr_repo_url.txt
 
 
       - name: Wait 4 minutes
