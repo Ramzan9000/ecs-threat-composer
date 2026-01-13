@@ -36,17 +36,12 @@ jobs:
           aws-region: ${{ secrets.DEV_AWS_REGION }}
 
 
-       # Download ECR URL artifact from Terraform workflow
-      - name: Download ECR URL artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ecr-url
-
-      # Set REPO_URL environment variable
-      - name: Set REPO_URL from artifact
+       # 4️⃣ Set REPO_URL from Terraform workflow_run output
+      - name: Set REPO_URL from Terraform workflow
         run: |
-          REPO_URL=$(cat ecr_repo_url.txt)
+          REPO_URL=${{ github.event.workflow_run.outputs.ecr_repo_url }}
           echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
+          echo "Using ECR repo URL: $REPO_URL"
 
       
       - name: Login to Amazon ECR
