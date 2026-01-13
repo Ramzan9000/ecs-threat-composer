@@ -60,8 +60,10 @@ jobs:
         run: terraform apply tfplan
 
 
-      - name: Set Terraform Output
-        id: set-output
+      - name: Save ECR URL
+        id: terraform-output
+        working-directory: infra/terraform/envs/prod   
         run: |
-          ECR_URL=$(terraform output -raw ecr_repository_url)
+        # get the ECR URL safely
+          ECR_URL=$(terraform output -raw ecr_repository_url | tr -d '\r')
           echo "ecr_repo_url=$ECR_URL" >> $GITHUB_OUTPUT
