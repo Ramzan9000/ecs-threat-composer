@@ -65,7 +65,7 @@ jobs:
           terraform output -raw ecr_repo_url > ecr_repo_url.txt
 
       - name: Upload ECR URL artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ecr-url
           path: infra/terraform/envs/dev/ecr_repo_url.txt
