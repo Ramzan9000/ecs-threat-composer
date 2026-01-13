@@ -43,7 +43,6 @@ service_name    = "prod-thr-container-service"
 desired_count   = 2
 container_name  = "threat-composer"
 container_port  = 80
-container_image = "my-ecs-app/threatmod:latest"
 ecs_launch_type = "FARGATE"
 
 

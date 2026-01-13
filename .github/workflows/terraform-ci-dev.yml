@@ -2,7 +2,7 @@ name: Terraform Apply (Dev)
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
   workflow_dispatch:
 
 
@@ -35,27 +35,29 @@ jobs:
           terraform_version: 1.6.0
 
       - name: Terraform Init
-        run: |
-          terraform -chdir=infa/terraform/envs/dev init \
-            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
-            -backend-config="key=dev/terraform.tfstate" \
-            -backend-config="region=${{ secrets.AWS_REGION }}" \
-            -backend-config="dynamodb_table=${{ secrets.TF_LOCK_TABLE }}"
+        working-directory: infra/terraform/envs/dev
+        run: terraform init
 
       - name: Terraform Format
-        run: terraform fmt -check
+        working-directory: infra/terraform
+        run: terraform fmt -check -recursive
 
       - name: Terraform Validate
-        run: terraform -chdir=infa/terraform/envs/dev validate 
+        working-directory: infra/terraform/envs/dev
+        run: terraform validate
 
       - name: Terraform Plan
-        run: terraform -chdir=infa/terraform/envs/dev plan -var-file=terraform.tfvars -out=tfplan
+        working-directory: infra/terraform/envs/dev
+        run: terraform plan -out=tfplan
 
-      - name: Terraform Apply
-        run: terraform -chdir=infa/terraform/envs/dev apply -auto-approve tfplan
+      - name: Terraform Apply (DEV auto-approve)
+        working-directory: infra/terraform/envs/dev
+        run: terraform apply -auto-approve tfplan
 
-      - name: Wait 2 minutes
-        run: sleep 180   # 180 seconds = 3 minutes
 
-      - name: Terraform Destroy
+      - name: Wait 4 minutes
+        run: sleep 240
+
+      - name: Terraform Destroy (TEMP TEST)
+        working-directory: infra/terraform/envs/dev
         run: terraform destroy -auto-approve

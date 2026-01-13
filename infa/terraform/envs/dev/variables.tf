@@ -84,7 +84,6 @@ variable "cluster_name" {}
 variable "task_name" {}
 variable "cpu" {}
 variable "memory" {}
-variable "container_image" {}
 
 # ECS Service
 variable "service_name" {}

@@ -35,23 +35,24 @@ jobs:
           aws-region: ${{ secrets.DEV_AWS_REGION }}
 
 
+      # Get the dynamically created repository URL from Terraform
+      - name: Get ECR repository URL
+        id: ecr
+        run: |
+          echo "REPO_URL=$(terraform -chdir=infa/terraform/envs/prod output -raw repository_url)" >> $GITHUB_ENV
+
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
+        with:
+          region: ${{ secrets.DEV_AWS_REGION }}
 
       - name: Build Docker image
         run: |
           docker build \
-            -t ${{ secrets.ECR_REPO_NAME }}:prod-latest \
+            -t $REPO_URL:prod-latest \
             -f docker/Dockerfile \
             .
 
-
-
-      - name: Tag image for ECR
+      - name: Push Docker image to ECR
         run: |
-           docker tag ${{ secrets.ECR_REPO_NAME }}:prod-latest \
-            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:prod-latest
-
-      - name: Push image to ECR
-        run: |
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest
+          docker push $REPO_URL:prod-latest

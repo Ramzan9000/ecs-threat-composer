@@ -110,6 +110,15 @@ output "service_name" {
 }
 
 
+output "ecs_container_image" {
+  value       = "${module.ecr.repository_url}:latest"
+  description = "The container image used by ECS tasks"
+}
+
+
+
+
+
 # ----------------------
 # alb
 # ----------------------
