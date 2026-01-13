@@ -62,11 +62,11 @@ jobs:
       
 
       - name: Save ECR URL
-        id: terraform-output
         working-directory: infra/terraform/envs/prod
-        run: |
-          # Get the ECR URL safely and escape for GitHub Actions
-          ECR_URL=$(terraform output -raw ecr_repository_url | tr -d '\r\n')
-          echo "ecr_repo_url<<EOF" >> $GITHUB_OUTPUT
-          echo "$ECR_URL" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+        run: terraform output -raw ecr_repository_url > ecr_repo_url.txt
+
+      - name: Upload ECR URL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ecr-url-prod
+          path: infra/terraform/envs/prod/ecr_repo_url.txt
