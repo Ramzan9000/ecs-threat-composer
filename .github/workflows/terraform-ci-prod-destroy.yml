@@ -1,7 +1,7 @@
 name: Terraform Destroy (Prod)
 
 on:
-  workflow_dispatch:   # manual
+  workflow_dispatch:   # manual trigger
 
 permissions:
   id-token: write
@@ -23,11 +23,13 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
 
       - name: Terraform Init
         working-directory: infra/terraform/envs/prod
-        run: terraform init
+        run: terraform init -migrate-state
 
       - name: Terraform Destroy (Prod)
         working-directory: infra/terraform/envs/prod
-        run: terraform destroy 
+        run: terraform destroy -auto-approve
