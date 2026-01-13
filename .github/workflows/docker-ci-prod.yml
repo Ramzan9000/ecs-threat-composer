@@ -3,13 +3,14 @@ name: Build and Push Docker Image (Prod)
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Terraform Apply (Dev)"]
-    types:     [completed]
+    workflows: ["Terraform Apply (Prod)"]
+    types: [completed]
 
 
 permissions:
   id-token: write
   contents: read
+  actions: read     # to download artifacts from another workflow
 
 jobs:
   build-and-push:
@@ -31,7 +32,8 @@ jobs:
       - name: Download ECR URL artifact
         uses: actions/download-artifact@v4
         with:
-          name: ecr-url
+          name: ecr-url-prod
+          run-id: ${{ github.event.workflow_run.id }}
 
       # ✅ Load ECR repo URL into environment
       - name: Set REPO_URL from artifact
@@ -46,21 +48,19 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::557690622944:role/github-actions-role
-          aws-region: ${{ secrets.DEV_AWS_REGION }}
+          aws-region: ${{ secrets.PROD_AWS_REGION }}
 
       
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          region: ${{ secrets.DEV_AWS_REGION }}
+          region: ${{ secrets.PROD_AWS_REGION }}
 
      
       - name: Build Docker image
         run: |
-          echo "Building Docker image $REPO_URL:prod-latest"
           docker build -t $REPO_URL:prod-latest -f docker/Dockerfile .
 
-      
       - name: Push Docker image to ECR
         run: |
           docker push $REPO_URL:prod-latest

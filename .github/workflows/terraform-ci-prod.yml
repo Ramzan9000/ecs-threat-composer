@@ -2,9 +2,8 @@ name: Terraform Apply (Prod)
 
 on:
   push:
-    branches: [main1]
+    branches: [main]
   workflow_dispatch:
-
 
 
 permissions:
@@ -12,9 +11,13 @@ permissions:
   contents: read
 
 
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    outputs:
+      ecr_repo_url: ${{ steps.terraform.outputs.ecr_repo_url }}
+
 
     steps:
       - name: Checkout code
@@ -22,14 +25,12 @@ jobs:
         with:
           submodules: true
 
-    
       # --- OIDC login ---
       - name: Configure AWS credentials using OIDC
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::557690622944:role/github-actions-role
-          aws-region: ${{ secrets.DEV_AWS_REGION }}
-
+          aws-region: ${{ secrets.PROD_AWS_REGION }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -37,28 +38,34 @@ jobs:
           terraform_version: 1.6.0
 
       - name: Terraform Init
-        run: |
-          terraform -chdir=infa/terraform/envs/prod init \
-            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
-            -backend-config="key=dev/terraform.tfstate" \
-            -backend-config="region=${{ secrets.DEV_AWS_REGION }}" \
-            -backend-config="dynamodb_table=${{ secrets.TF_LOCK_TABLE }}"
-        
+        working-directory: infra/terraform/envs/prod
+        run: terraform init
 
       - name: Terraform Format
-        run: terraform fmt -check
+        working-directory: infra/terraform
+        run: terraform fmt -check -recursive
 
       - name: Terraform Validate
-        run: terraform -chdir=infa/terraform/envs/prod validate 
+        working-directory: infra/terraform/envs/prod
+        run: terraform validate
 
       - name: Terraform Plan
-        run: terraform -chdir=infa/terraform/envs/prod plan -var-file=terraform.tfvars -out=tfplan
+        working-directory: infra/terraform/envs/prod
+        run: terraform plan -out=tfplan
 
-      - name: Terraform Apply
-        run: terraform -chdir=infa/terraform/envs/prod apply -auto-approve tfplan
+      
+      - name: Terraform Apply 
+        id: terraform
+        working-directory: infra/terraform/envs/prod
+        run: terraform apply tfplan
 
-      - name: Wait 2 minutes
-        run: sleep 180   # 180 seconds = 3 minutes
+      - name: Save ECR URL
+        working-directory: infra/terraform/envs/prod
+        run: terraform output -raw ecr_repository_url > ecr_repo_url.txt
 
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+      - name: Upload ECR URL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ecr-url-Prod
+          path: infra/terraform/envs/prod/ecr_repo_url.txt
+          

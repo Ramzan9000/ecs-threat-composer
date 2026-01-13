@@ -1,19 +1,20 @@
 name: Build and Push Docker Image (Dev)
 
 on:
-  push:
-    branches: [dev]
   workflow_dispatch:
-
+  workflow_run:
+    workflows: ["Terraform Apply (Dev)"]
+    types: [completed]
 
 
 permissions:
   id-token: write
   contents: read
-
+  actions: read     # to download artifacts from another workflow
 
 jobs:
   build-and-push:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -22,11 +23,26 @@ jobs:
         with:
           submodules: true
 
-
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: ./docker/Dockerfile
+
+      # ✅ Download Terraform output artifact
+      - name: Download ECR URL artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ecr-url-Dev
+          run-id: ${{ github.event.workflow_run.id }}
+
+      # ✅ Load ECR repo URL into environment
+      - name: Set REPO_URL from artifact
+        run: |
+          REPO_URL=$(cat ecr_repo_url.txt)
+          echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
+          echo "Using ECR repo URL: $REPO_URL"
+
+
 
       - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v4
@@ -34,23 +50,17 @@ jobs:
           role-to-assume: arn:aws:iam::557690622944:role/github-actions-role
           aws-region: ${{ secrets.DEV_AWS_REGION }}
 
-
+      
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
+        with:
+          region: ${{ secrets.DEV_AWS_REGION }}
 
+     
       - name: Build Docker image
         run: |
-          docker build \
-            -t ${{ secrets.ECR_REPO_NAME }}:dev-latest \
-            -f docker/Dockerfile \
-            .
+          docker build -t $REPO_URL:dev-latest -f docker/Dockerfile .
 
-
-      - name: Tag image for ECR
+      - name: Push Docker image to ECR
         run: |
-          docker tag ${{ secrets.ECR_REPO_NAME }}:dev-latest \
-            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest
-
-      - name: Push image to ECR
-        run: |
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.DEV_AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:dev-latest
+          docker push $REPO_URL:dev-latest
