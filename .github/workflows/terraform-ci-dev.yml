@@ -56,11 +56,17 @@ jobs:
       
       - name: Terraform Apply (DEV auto-approve)
         working-directory: infra/terraform/envs/dev
-        id: terraform
-        run: |
-          terraform apply -auto-approve tfplan
-          # Captured the ECR repository URL
-          echo "ecr_repo_url=$(terraform output -raw ecr_repo_url)" >> $GITHUB_OUTPUT
+        run: terraform apply -auto-approve tfplan
+
+      - name: Save ECR URL
+        working-directory: infra/terraform/envs/dev
+        run: terraform output -raw ecr_repository_url > ecr_repo_url.txt
+
+      - name: Upload ECR URL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ecr-url
+          path: infra/terraform/envs/dev/ecr_repo_url.txt
           
 
       - name: Wait 4 minutes

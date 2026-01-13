@@ -4,17 +4,16 @@ on:
   workflow_dispatch:
   workflow_run:
     workflows: ["Terraform Apply (Dev)"]
-    types:
-      - completed
+    types:     [completed]
 
 
 permissions:
   id-token: write
   contents: read
 
-
 jobs:
   build-and-push:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -28,19 +27,26 @@ jobs:
         with:
           dockerfile: ./docker/Dockerfile
 
+      # ✅ Download Terraform output artifact
+      - name: Download ECR URL artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ecr-url
+
+      # ✅ Load ECR repo URL into environment
+      - name: Set REPO_URL from artifact
+        run: |
+          REPO_URL=$(cat ecr_repo_url.txt)
+          echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
+          echo "Using ECR repo URL: $REPO_URL"
+
+
+
       - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::557690622944:role/github-actions-role
           aws-region: ${{ secrets.DEV_AWS_REGION }}
-
-
-       # 4️⃣ Set REPO_URL from Terraform workflow_run output
-      - name: Set REPO_URL from Terraform workflow
-        run: |
-          REPO_URL=${{ github.event.workflow_run.outputs.ecr_repo_url }}
-          echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
-          echo "Using ECR repo URL: $REPO_URL"
 
       
       - name: Login to Amazon ECR
