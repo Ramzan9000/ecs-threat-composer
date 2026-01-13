@@ -35,8 +35,8 @@ ecr_repository_name = "prod-thr-composer-repo"
 #-----------------
 # ECS
 #-----------------
-cluster_name = "prod-thr-composer-cluster"
-task_name    = "prod-thr-container-task"
+cluster_name    = "prod-thr-composer-cluster"
+task_name       = "prod-thr-container-task"
 cpu             = "256"
 memory          = "512"
 service_name    = "prod-thr-container-service"
@@ -68,15 +68,15 @@ alb_listener_http_protocol = "HTTP"
 # domain_name = "threat-composer.com"
 
 # Hosted zone ID 
-zone_id       = ""
+zone_id = ""
 
 # Record for ALB
-record_name   = "www.threat-composer.com"  
-ttl           = 300
+record_name = "www.threat-composer.com"
+ttl         = 300
 
 # ALB info (populated after ALB creation)
-alb_dns_name  = ""  # Terraform can pass module.alb.dns_name here
-alb_zone_id   = ""  # Terraform can pass module.alb.zone_id here
+alb_dns_name = "" # Terraform can pass module.alb.dns_name here
+alb_zone_id  = "" # Terraform can pass module.alb.zone_id here
 
 # validation_method  = "DNS" 
 

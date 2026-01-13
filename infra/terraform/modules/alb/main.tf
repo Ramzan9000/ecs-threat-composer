@@ -15,12 +15,12 @@ resource "aws_lb" "this" {
 
 # Call Target Group submodule
 module "target_group" {
-  source       = "./submodules/target_group"
-  vpc_id       = var.vpc_id
-  name         = var.target_group_name
-  port         = var.target_group_port
-  protocol     = var.target_group_protocol
-  target_type  = "ip"
+  source      = "./submodules/target_group"
+  vpc_id      = var.vpc_id
+  name        = var.target_group_name
+  port        = var.target_group_port
+  protocol    = var.target_group_protocol
+  target_type = "ip"
 }
 
 # Call Listener submodule

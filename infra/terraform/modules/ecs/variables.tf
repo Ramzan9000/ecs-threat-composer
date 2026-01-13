@@ -11,7 +11,7 @@ variable "task_name" {
   description = "Name of the ECS Task Definition"
   type        = string
 }
-  
+
 
 variable "cpu" {
   description = "CPU units for the task"
@@ -82,6 +82,6 @@ variable "container_port" {
 variable "container_image" {
   type        = string
   description = "image where using in task definition"
-  
+
 }
   

@@ -165,7 +165,7 @@ variable "alb_zone_id" {
 }
 
 variable "alb_dns_name" {
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
   description = "DNS name of the ALB (for Route53 alias record)"
 }
