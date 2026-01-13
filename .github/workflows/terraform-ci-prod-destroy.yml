@@ -20,14 +20,14 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::557690622944:role/github-actions-role
           aws-region: ${{ secrets.PROD_AWS_REGION }}
- 
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init
-        working-directory: infra/terraform/envs/Prod
+        working-directory: infra/terraform/envs/prod
         run: terraform init
 
       - name: Terraform Destroy (Prod)
-        working-directory: infra/terraform/envs/Prod
+        working-directory: infra/terraform/envs/prod
         run: terraform destroy 
