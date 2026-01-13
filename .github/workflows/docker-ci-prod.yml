@@ -28,19 +28,13 @@ jobs:
         with:
           dockerfile: ./docker/Dockerfile
 
-      # ✅ Download Terraform output artifact
-      - name: Download ECR URL artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ecr-url-prod
-
-      # ✅ Load ECR repo URL into environment
-      - name: Set REPO_URL from artifact
+      
+      # Get ECR repo URL from Terraform workflow output
+      - name: Set REPO_URL from Terraform output
         run: |
-          REPO_URL=$(cat ecr_repo_url.txt)
+          REPO_URL=${{ github.event.workflow_run.outputs.ecr_repo_url }}
           echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
-          echo "Using ECR repo URL: $REPO_URL"
-
+          echo "Using ECR repo URL: $REPO_URL"    
 
 
       - name: Configure AWS credentials using OIDC

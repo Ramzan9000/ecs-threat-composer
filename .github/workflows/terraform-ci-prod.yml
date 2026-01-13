@@ -16,7 +16,7 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     outputs:
-      ecr_repo_url: ${{ steps.terraform.outputs.ecr_repo_url }}
+      ecr_repo_url: ${{ steps.set-output.outputs.ecr_repo_url }}
 
 
     steps:
@@ -59,13 +59,9 @@ jobs:
         working-directory: infra/terraform/envs/prod
         run: terraform apply tfplan
 
-      - name: Save ECR URL
-        working-directory: infra/terraform/envs/prod
-        run: terraform output -raw ecr_repository_url > ecr_repo_url.txt
 
-      - name: Upload ECR URL artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ecr-url-prod
-          path: infra/terraform/envs/prod/ecr_repo_url.txt
-          
+      - name: Set Terraform Output
+        id: set-output
+        run: |
+          ECR_URL=$(terraform output -raw ecr_repository_url)
+          echo "ecr_repo_url=$ECR_URL" >> $GITHUB_OUTPUT
