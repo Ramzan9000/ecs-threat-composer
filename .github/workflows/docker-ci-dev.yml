@@ -33,7 +33,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ecr-url-Dev
-          run-id: ${{ github.event.workflow_run.id }}
 
       # ✅ Load ECR repo URL into environment
       - name: Set REPO_URL from artifact
