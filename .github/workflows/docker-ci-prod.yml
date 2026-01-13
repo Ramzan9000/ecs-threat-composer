@@ -6,11 +6,10 @@ on:
     workflows: ["Terraform Apply (Prod)"]
     types: [completed]
 
-
 permissions:
   id-token: write
   contents: read
-  actions: read     # to download artifacts from another workflow
+  actions: read     # required to download artifacts from another workflow
 
 jobs:
   build-and-push:
@@ -28,35 +27,39 @@ jobs:
         with:
           dockerfile: ./docker/Dockerfile
 
+      # ✅ Download Terraform output artifact (latest run)
       - name: Download ECR URL artifact
         uses: actions/download-artifact@v4
         with:
-          name: ecr-url-prod   # matches the artifact uploaded by Terraform
+          name: ecr-url-prod   # must match Terraform upload
 
+      # ✅ Set REPO_URL from artifact
       - name: Set REPO_URL from artifact
         run: |
           REPO_URL=$(cat ecr_repo_url.txt)
           echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
           echo "Using ECR repo URL: $REPO_URL"
 
-
-      - name: Configure AWS credentials using OIDC
+      # ✅ Configure AWS credentials using OIDC
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::557690622944:role/github-actions-role
           aws-region: ${{ secrets.PROD_AWS_REGION }}
 
-      
+      # ✅ Login to Amazon ECR
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
         with:
           region: ${{ secrets.PROD_AWS_REGION }}
 
-     
+      # ✅ Build Docker image
       - name: Build Docker image
         run: |
+          echo "Building Docker image $REPO_URL:prod-latest"
           docker build -t $REPO_URL:prod-latest -f docker/Dockerfile .
 
+      # ✅ Push Docker image to ECR
       - name: Push Docker image to ECR
         run: |
           docker push $REPO_URL:prod-latest
