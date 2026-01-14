@@ -54,12 +54,12 @@ jobs:
         run: terraform apply tfplan
 
       
-      - name: Save ECR URL (state-based, bulletproof)
+      - name: Save ECR URL artifact
         working-directory: infra/terraform/envs/prod
+        env:
+          ACTIONS_STEP_DEBUG: false
         run: |
-          terraform show -json terraform.tfstate \
-            | jq -r '.values.outputs.ecr_repository_url.value' \
-            > ecr_repo_url.txt
+          terraform output -raw ecr_repository_url > ecr_repo_url.txt
 
 
 
