@@ -32,7 +32,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ecr-url-prod   # matches Terraform upload
-          # run-id removed to always get the artifact from the triggering workflow
+          run-id: ${{ github.event.workflow_run.id }}
+          repository: ${{ github.repository }}
+          
 
       # ✅ Set REPO_URL environment variable
       - name: Set REPO_URL from artifact

@@ -53,15 +53,21 @@ jobs:
         working-directory: infra/terraform/envs/prod
         run: terraform apply tfplan
 
+      
       - name: Save ECR URL
         id: save-ecr
         working-directory: infra/terraform/envs/prod
         run: |
-          # Get the ECR URL and remove any trailing newline
           ECR_URL=$(terraform output -raw ecr_repository_url | tr -d '\r\n')
           echo "$ECR_URL" > ecr_repo_url.txt
-    
+
           # Safely set workflow output using a here-doc
           echo "ecr_repo_url<<EOF" >> $GITHUB_OUTPUT
           echo "$ECR_URL" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Upload ECR URL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ecr-url-prod
+          path: infra/terraform/envs/prod/ecr_repo_url.txt
