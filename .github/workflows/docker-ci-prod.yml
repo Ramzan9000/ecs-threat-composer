@@ -33,6 +33,7 @@ jobs:
         with:
           name: ecr-url-prod   # matches Terraform upload
           run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{github.token }}
           repository: ${{ github.repository }}
           
 
