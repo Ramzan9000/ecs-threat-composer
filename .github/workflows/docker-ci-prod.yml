@@ -61,9 +61,9 @@ jobs:
       - name: Build Docker image
         run: |
           echo "Building Docker image $REPO_URL:prod-latest"
-          docker build -t $REPO_URL:prod-latest -f docker/Dockerfile .
+          docker build -t "${REPO_URL}:prod-latest" -f docker/Dockerfile .
 
       # ✅ Push Docker image
       - name: Push Docker image to ECR
         run: |
-          docker push "$REPO_URL:prod-latest"
+          docker push "${REPO_URL}:prod-latest"
