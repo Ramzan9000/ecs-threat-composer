@@ -66,4 +66,4 @@ jobs:
       # ✅ Push Docker image
       - name: Push Docker image to ECR
         run: |
-          docker push $REPO_URL:prod-latest
+          docker push "$REPO_URL:prod-latest"
