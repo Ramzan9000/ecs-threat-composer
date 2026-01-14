@@ -37,6 +37,14 @@ jobs:
           repository: ${{ github.repository }}
           path: infra/terraform/envs/prod
 
+      - name: Debug ECR repo URL artifact
+        working-directory: infra/terraform/envs/prod
+        run: |
+          echo "---- ECR FILE CONTENT ----"
+          cat ecr_repo_url.txt
+          echo "--------------------------"
+
+
       # ✅ Set REPO_URL environment variable
       - name: Set REPO_URL from artifact
         run: |

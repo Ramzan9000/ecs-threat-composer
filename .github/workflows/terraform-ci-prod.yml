@@ -58,8 +58,7 @@ jobs:
         id: save-ecr
         working-directory: infra/terraform/envs/prod
         run: |
-          ECR_URL=$(terraform output -raw ecr_repository_url | tr -d '\r\n')
-          echo "$ECR_URL" > ecr_repo_url.txt
+          terraform output -raw ecr_repository_url > ecr_repo_url.txt
 
           # Safely set workflow output using a here-doc
           echo "ecr_repo_url<<EOF" >> $GITHUB_OUTPUT
