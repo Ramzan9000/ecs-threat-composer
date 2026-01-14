@@ -38,11 +38,12 @@ jobs:
           
 
       # ✅ Set REPO_URL environment variable
-      - name: Set REPO_URL from artifact
+      - name: Set REPO_URL from Terraform output
         run: |
-          REPO_URL=$(cat ecr_repo_url.txt)
+          REPO_URL=${{ github.event.workflow_run.outputs.ecr_repo_url }}
           echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
           echo "Using ECR repo URL: $REPO_URL"
+
 
       # ✅ Configure AWS credentials for Docker
       - name: Configure AWS credentials
