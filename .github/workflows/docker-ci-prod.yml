@@ -40,9 +40,10 @@ jobs:
       # ✅ Set REPO_URL environment variable
       - name: Set REPO_URL from artifact
         run: |
-          REPO_URL=$(cat infra/terraform/envs/prod/ecr_repo_url.txt | tr -d '\r\n')
+          unset REPO_URL
+          REPO_URL="$(cat infra/terraform/envs/prod/ecr_repo_url.txt | tr -d '\r\n')"
           echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
-          echo "Using ECR repo URL: $REPO_URL"
+          echo "Using ECR repo URL: [$REPO_URL]"
 
 
 
