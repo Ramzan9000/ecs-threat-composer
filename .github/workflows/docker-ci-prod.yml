@@ -35,14 +35,15 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{github.token }}
           repository: ${{ github.repository }}
-          
+          path: infra/terraform/envs/prod
 
       # ✅ Set REPO_URL environment variable
-      - name: Set REPO_URL from Terraform output
+      - name: Set REPO_URL from artifact
         run: |
-          REPO_URL=${{ github.event.workflow_run.outputs.ecr_repo_url }}
+          REPO_URL=$(cat infra/terraform/envs/prod/ecr_repo_url.txt)
           echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
           echo "Using ECR repo URL: $REPO_URL"
+
 
 
       # ✅ Configure AWS credentials for Docker
@@ -55,9 +56,7 @@ jobs:
       # ✅ Login to ECR
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
-        with:
-          region: ${{ secrets.PROD_AWS_REGION }}
-
+        
       # ✅ Build Docker image
       - name: Build Docker image
         run: |
