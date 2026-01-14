@@ -54,13 +54,13 @@ jobs:
         run: terraform apply tfplan
 
       
-      - name: Save ECR URL (clean)
+      - name: Save ECR URL (JSON-safe)
         working-directory: infra/terraform/envs/prod
         run: |
-          terraform output -raw ecr_repository_url \
-            | tail -n 1 \
-            | sed 's/::debug::.*//' \
+          terraform output -json \
+            | jq -r '.ecr_repository_url.value' \
             > ecr_repo_url.txt
+
 
       - name: Verify ECR URL file
         working-directory: infra/terraform/envs/prod
