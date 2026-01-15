@@ -6,4 +6,7 @@ resource "aws_ecr_repository" "this" {
   }
 
   tags = var.tags
+
+  force_delete = true 
+  
 }

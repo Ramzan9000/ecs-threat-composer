@@ -23,10 +23,12 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
 
       - name: Terraform Init
         working-directory: infra/terraform/envs/dev
-        run: terraform init
+        run: terraform init -migrate-state
 
       - name: Terraform Destroy (Dev)
         working-directory: infra/terraform/envs/dev

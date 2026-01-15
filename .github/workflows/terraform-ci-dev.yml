@@ -36,6 +36,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.6.0
+          terraform_wrapper: false
 
       - name: Terraform Init
         working-directory: infra/terraform/envs/dev
@@ -62,6 +63,13 @@ jobs:
       - name: Save ECR URL
         working-directory: infra/terraform/envs/dev
         run: terraform output -raw ecr_repository_url > ecr_repo_url.txt
+
+
+      - name: Verify ECR URL file
+        working-directory: infra/terraform/envs/prod
+        run: |
+          cat ecr_repo_url.txt
+
 
       - name: Upload ECR URL artifact
         uses: actions/upload-artifact@v4
