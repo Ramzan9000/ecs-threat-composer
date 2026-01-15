@@ -53,16 +53,11 @@ jobs:
         working-directory: infra/terraform/envs/prod
         run: terraform apply tfplan
 
-      
-      - name: Get Terraform ECR URL safely
-        shell: bash
+      - name: Save ECR URL artifact
+        working-directory: infra/terraform/envs/prod
         run: |
-          terraform -chdir=infra/terraform/envs/prod output -raw ecr_repository_url \
-            | tail -n 1 \
-            | sed 's/::debug::.*//' \
-            > infra/terraform/envs/prod/ecr_repo_url.txt
-
-
+          terraform output ecr_repository_url > ecr_repo_url.txt
+      
 
       - name: Verify ECR URL file
         working-directory: infra/terraform/envs/prod

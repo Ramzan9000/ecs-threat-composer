@@ -37,21 +37,20 @@ jobs:
           repository: ${{ github.repository }}
           path: infra/terraform/envs/prod
 
-      - name: Debug ECR repo URL artifact
-        working-directory: infra/terraform/envs/prod
+      
+      # Clean the ECR URL: take last line, remove debug/wrapper
+      - name: Clean ECR URL
         run: |
-          echo "---- ECR FILE CONTENT ----"
-          cat ecr_repo_url.txt
-          echo "--------------------------"
+          tail -n 1 infra/terraform/envs/prod/ecr_repo_url.txt \
+            | sed 's/::debug::.*//' \
+            > infra/terraform/envs/prod/ecr_repo_url_clean.txt
 
-
-      # ✅ Set REPO_URL environment variable
-      - name: Set REPO_URL from artifact
+      # Read clean URL into variable
+      - name: Read Clean ECR URL
         run: |
-          unset REPO_URL
-          REPO_URL="$(cat infra/terraform/envs/prod/ecr_repo_url.txt | tr -d '\r\n')"
+          REPO_URL=$(cat infra/terraform/envs/prod/ecr_repo_url_clean.txt)
           echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
-          echo "Using ECR repo URL: [$REPO_URL]"
+          echo "Using clean ECR URL: $REPO_URL"
 
 
 
