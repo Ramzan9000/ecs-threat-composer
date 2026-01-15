@@ -92,4 +92,3 @@ jobs:
           REPO_URL=$(cat infra/terraform/envs/prod/ecr_repo_url.txt)
           terraform apply -auto-approve \
             -var="container_image=${REPO_URL}:prod-latest"
-        working-directory: infra/terraform/envs/prod
