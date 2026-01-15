@@ -1,9 +1,7 @@
 name: Terraform Destroy (Dev)
 
 on:
-  push:
-    branches:
-      - dev
+  workflow_dispatch:
 
   
 
