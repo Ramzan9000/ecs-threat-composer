@@ -66,7 +66,7 @@ jobs:
 
 
       - name: Verify ECR URL file
-        working-directory: infra/terraform/envs/prod
+        working-directory: infra/terraform/envs/dev
         run: |
           cat ecr_repo_url.txt
 
