@@ -36,3 +36,5 @@ jobs:
       - name: Terraform Destroy (Dev)
         working-directory: infra/terraform/envs/dev
         run: terraform destroy -auto-approve -lock=false
+
+      #check
