@@ -88,7 +88,8 @@ jobs:
 
 
       - name: Update ECS Task Definition
+        working-directory: infra/terraform/envs/prod
         run: |
-          REPO_URL=$(cat infra/terraform/envs/prod/ecr_repo_url.txt)
+          REPO_URL=$(cat ecr_repo_url.txt)
           terraform apply -auto-approve \
             -var="container_image=${REPO_URL}:prod-latest"
