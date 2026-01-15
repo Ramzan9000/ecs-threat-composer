@@ -2,7 +2,7 @@ name: Terraform Destroy (Dev)
 
 on:
   workflow_dispatch:
-
+  
 
 permissions:
   id-token: write
