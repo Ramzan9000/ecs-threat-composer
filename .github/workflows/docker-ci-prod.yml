@@ -43,6 +43,7 @@ jobs:
         run: |
           tail -n 1 infra/terraform/envs/prod/ecr_repo_url.txt \
             | sed 's/::debug::.*//' \
+            | tr -d '"' \
             > infra/terraform/envs/prod/ecr_repo_url_clean.txt
 
       # Read clean URL into variable
