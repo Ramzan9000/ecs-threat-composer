@@ -37,22 +37,19 @@ jobs:
           repository: ${{ github.repository }}
           path: infra/terraform/envs/prod
 
-      
-      # Clean the ECR URL: take last line, remove debug/wrapper
-      - name: Clean ECR URL
+      - name: Extract clean ECR URL
         run: |
-          tail -n 1 infra/terraform/envs/prod/ecr_repo_url.txt \
+          # Grab all non-empty lines, remove debug, remove quotes, take last non-empty line
+          REPO_URL=$(grep -v '^$' infra/terraform/envs/prod/ecr_repo_url.txt \
             | sed 's/::debug::.*//' \
             | tr -d '"' \
-            > infra/terraform/envs/prod/ecr_repo_url_clean.txt
+            | tail -n 1)
 
-      # Read clean URL into variable
-      - name: Read Clean ECR URL
-        run: |
-          REPO_URL=$(cat infra/terraform/envs/prod/ecr_repo_url_clean.txt)
+          # Save to environment for subsequent steps
           echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
           echo "Using clean ECR URL: $REPO_URL"
 
+      
 
 
       # ✅ Configure AWS credentials for Docker
