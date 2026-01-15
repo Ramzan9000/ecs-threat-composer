@@ -39,8 +39,10 @@ jobs:
 
       - name: Read ECR URL
         run: |
-          ECR_URL=$(cat ecr_repo_url.txt)
+          ECR_URL=$(cat infra/terraform/envs/prod/ecr_repo_url.txt)
+          echo "REPO_URL=$ECR_URL" >> $GITHUB_ENV
           echo "Using $ECR_URL"
+
       
 
 
