@@ -1,9 +1,7 @@
 name: Terraform Destroy (Dev)
+working-directory: infra/terraform/envs/dev
+run: terraform destroy -auto-approve -lock=false
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [dev]
 
 
 permissions:
