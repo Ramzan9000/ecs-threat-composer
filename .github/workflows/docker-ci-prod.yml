@@ -37,18 +37,10 @@ jobs:
           repository: ${{ github.repository }}
           path: infra/terraform/envs/prod
 
-      - name: Extract clean ECR URL
+      - name: Read ECR URL
         run: |
-          # Grab all non-empty lines, remove debug, remove quotes, take last non-empty line
-          REPO_URL=$(grep -v '^$' infra/terraform/envs/prod/ecr_repo_url.txt \
-            | sed 's/::debug::.*//' \
-            | tr -d '"' \
-            | tail -n 1)
-
-          # Save to environment for subsequent steps
-          echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
-          echo "Using clean ECR URL: $REPO_URL"
-
+          ECR_URL=$(cat ecr_repo_url.txt)
+          echo "Using $ECR_URL"
       
 
 
