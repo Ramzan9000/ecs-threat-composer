@@ -37,13 +37,19 @@ jobs:
           repository: ${{ github.repository }}
           path: infra/terraform/envs/prod
 
+
+      - name: Verify artifact
+        run: |
+          echo "Files in infra/terraform/envs/prod:"
+          ls -l infra/terraform/envs/prod
+
+
       - name: Read ECR URL
         run: |
           ECR_URL=$(cat infra/terraform/envs/prod/ecr_repo_url.txt)
           echo "REPO_URL=$ECR_URL" >> $GITHUB_ENV
           echo "Using $ECR_URL"
 
-      
 
 
       # ✅ Configure AWS credentials for Docker
@@ -67,6 +73,19 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           docker push "${REPO_URL}:prod-latest"
+
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
+          terraform_wrapper: false
+
+
+      - name: Terraform Init
+        working-directory: infra/terraform/envs/prod
+        run: terraform init
+
 
       - name: Update ECS Task Definition
         run: |
