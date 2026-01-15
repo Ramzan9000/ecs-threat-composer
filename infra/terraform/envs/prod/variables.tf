@@ -91,6 +91,11 @@ variable "desired_count" {}
 variable "ecs_launch_type" {}
 variable "container_name" {}
 variable "container_port" {}
+variable "container_image" {
+  description = "The container image URL for ECS tasks"
+  type        = string
+  default     = "amazonlinux:2" # placeholder
+}
 
 
 

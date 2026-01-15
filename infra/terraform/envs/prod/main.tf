@@ -61,7 +61,7 @@ module "ecs" {
   memory             = var.memory
   execution_role_arn = module.iam.ecs_execution_role_arn # dynamic from IAM module
   task_role_arn      = module.iam.ecs_task_role_arn      # dynamic from IAM module
-  container_image    = "${module.ecr.repository_url}:latest"
+  container_image    = var.container_image
 
 
   # ECS Service
