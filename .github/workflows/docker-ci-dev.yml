@@ -98,5 +98,3 @@ jobs:
           REPO_URL=$(cat ecr_repo_url.txt)
           terraform apply -auto-approve \
             -var="container_image=${REPO_URL}:dev-latest"
-
-donjldsoods
