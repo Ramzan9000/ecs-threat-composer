@@ -1,12 +1,13 @@
 resource "aws_ecr_repository" "this" {
   name                 = var.repository_name
-  image_tag_mutability = "MUTABLE" # or "IMMUTABLE" for stricter version control
+  image_tag_mutability = "MUTABLE"
+
   image_scanning_configuration {
     scan_on_push = true
   }
 
   tags = var.tags
 
-  force_delete = true 
-  
+  force_delete = true
 }
+
