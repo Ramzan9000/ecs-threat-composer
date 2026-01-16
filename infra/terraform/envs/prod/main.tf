@@ -73,7 +73,7 @@ module "ecs" {
   target_group_arn   = module.alb.target_group_arn              # dynamic from ALB module
   container_name     = var.container_name
   container_port     = var.container_port
-  depends_on = [module.vpc, module.iam, module.security_groups, module.alb]
+  depends_on         = [module.vpc, module.iam, module.security_groups, module.alb]
 }
 
 # ----------------------
