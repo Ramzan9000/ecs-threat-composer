@@ -52,18 +52,24 @@ Here’s the overview of the project infrastructure:
 
 
 
+## High-Level Architecture & Traffic Flow
 
-High-level Traffic Flow
+- **GitHub Actions (CI/CD)**  
+  Automates Terraform infrastructure provisioning (Dev & Prod) and Docker image build/push using OIDC authentication.
 
-* ALB: Public-facing load balancer routing traffic to ECS tasks
+- **Application Load Balancer (ALB)**  
+  Public-facing load balancer routing incoming traffic to ECS services.
 
-* ECS Tasks: Runs threat-composer Docker containers in private subnets
+- **ECS (Fargate)**  
+  Runs containerized `threat-composer` application tasks in private subnets.
 
-* NAT Gateway: Provides outbound internet access for ECS tasks
+- **NAT Gateway**  
+  Provides outbound internet access for ECS tasks in private subnets.
 
-* ECR: Stores Docker images for deployment
+- **Amazon ECR**  
+  Stores Docker images built and pushed by CI/CD pipelines.
 
-* Terraform Modules: Modular, reusable infrastructure for maintainability
+- **Terraf**
 
 
 ## Folder Structure
@@ -74,7 +80,9 @@ High-level Traffic Flow
     ├── docker-ci-dev.yml
     ├── docker-ci-prod.yml
     ├── terraform-ci-dev.yml
-    └── terraform-ci-prod.yml
+    ├── terraform-ci-dev-destroy.yml
+    ├── terraform-ci-prod.yml
+    └── terraform-ci-prod-destroy.yml
 
 app/
 ├── backend/
@@ -85,101 +93,102 @@ app/
 │   └── package.json
 ├── threat-composer/
 │   └── [all app code copied from original repo]
-│
+
 docker/
 ├── .dockerignore
 ├── docker-compose.yaml
 └── Dockerfile
 
 infra/
-├── terraform/
-│   ├── backend.tf
-│   ├── envs/
-│   │   ├── dev/
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   ├── outputs.tf
-│   │   │   ├── provider.tf
-│   │   │   └── terraform.tfvars
-│   │   └── prod/
-│   │       ├── main.tf
-│   │       ├── variables.tf
-│   │       ├── outputs.tf
-│   │       ├── provider.tf
-│   │       └── terraform.tfvars
-│   └── modules/
-│       ├── acm/
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
-│       ├── alb/
-│       │   └── submodules/
-│       │       ├── listener/
-│       │       │   ├── main.tf
-│       │       │   ├── variables.tf
-│       │       │   └── outputs.tf
-│       │       └── target_group/
-│       │           ├── main.tf
-│       │           ├── variables.tf
-│       │           └── outputs.tf
-│       ├── ecr/
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
-│       ├── ecs/
-│       │   └── submodules/
-│       │       ├── service/
-│       │       │   ├── main.tf
-│       │       │   ├── variables.tf
-│       │       │   └── outputs.tf
-│       │       └── task_definition/
-│       │           ├── main.tf
-│       │           ├── variables.tf
-│       │           └── outputs.tf
-│       ├── iam/
-│       │   └── submodules/
-│       │       ├── alb_role/
-│       │       │   ├── main.tf
-│       │       │   ├── variables.tf
-│       │       │   └── outputs.tf
-│       │       ├── ecs_execution_role/
-│       │       │   ├── main.tf
-│       │       │   ├── variables.tf
-│       │       │   └── outputs.tf
-│       │       └── ecs_task_role/
-│       │           ├── main.tf
-│       │           ├── variables.tf
-│       │           └── outputs.tf
-│       ├── route53/
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
-│       ├── security_groups/
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
-│       └── vpc/
-│           └── submodules/
-│               ├── internet_gateway/
-│               │   ├── main.tf
-│               │   ├── variables.tf
-│               │   └── outputs.tf
-│               ├── nat_gateway/
-│               │   ├── main.tf
-│               │   ├── variables.tf
-│               │   └── outputs.tf
-│               ├── private_subnet/
-│               │   ├── main.tf
-│               │   ├── variables.tf
-│               │   └── outputs.tf
-│               ├── public_subnet/
-│               │   ├── main.tf
-│               │   ├── variables.tf
-│               │   └── outputs.tf
-│               └── route_tables/
-│                   ├── main.tf
-│                   ├── variables.tf
-│                   └── outputs.tf
+└── terraform/
+    ├── envs/
+    │   ├── dev/
+    │   │   ├── backend.tf
+    │   │   ├── main.tf
+    │   │   ├── variables.tf
+    │   │   ├── outputs.tf
+    │   │   ├── provider.tf
+    │   │   └── terraform.tfvars
+    │   └── prod/
+    │       ├── backend.tf
+    │       ├── main.tf
+    │       ├── variables.tf
+    │       ├── outputs.tf
+    │       ├── provider.tf
+    │       └── terraform.tfvars
+    └── modules/
+        ├── acm/
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        ├── alb/
+        │   └── submodules/
+        │       ├── listener/
+        │       │   ├── main.tf
+        │       │   ├── variables.tf
+        │       │   └── outputs.tf
+        │       └── target_group/
+        │           ├── main.tf
+        │           ├── variables.tf
+        │           └── outputs.tf
+        ├── ecr/
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        ├── ecs/
+        │   └── submodules/
+        │       ├── service/
+        │       │   ├── main.tf
+        │       │   ├── variables.tf
+        │       │   └── outputs.tf
+        │       └── task_definition/
+        │           ├── main.tf
+        │           ├── variables.tf
+        │           └── outputs.tf
+        ├── iam/
+        │   └── submodules/
+        │       ├── alb_role/
+        │       │   ├── main.tf
+        │       │   ├── variables.tf
+        │       │   └── outputs.tf
+        │       ├── ecs_execution_role/
+        │       │   ├── main.tf
+        │       │   ├── variables.tf
+        │       │   └── outputs.tf
+        │       └── ecs_task_role/
+        │           ├── main.tf
+        │           ├── variables.tf
+        │           └── outputs.tf
+        ├── route53/
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        ├── security_groups/
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        └── vpc/
+            └── submodules/
+                ├── internet_gateway/
+                │   ├── main.tf
+                │   ├── variables.tf
+                │   └── outputs.tf
+                ├── nat_gateway/
+                │   ├── main.tf
+                │   ├── variables.tf
+                │   └── outputs.tf
+                ├── private_subnet/
+                │   ├── main.tf
+                │   ├── variables.tf
+                │   └── outputs.tf
+                ├── public_subnet/
+                │   ├── main.tf
+                │   ├── variables.tf
+                │   └── outputs.tf
+                └── route_tables/
+                    ├── main.tf
+                    ├── variables.tf
+                    └── outputs.tf
 
 .envs
 .gitignore
@@ -195,38 +204,29 @@ screenshots/
 
 ## Infrastructure
 
-
 ### Terraform Modules
 
-* ACM: SSL/TLS certificate management for secure traffic
+- **ACM**: Optional SSL/TLS certificate management for HTTPS traffic (currently commented out)
+- **ALB**: Application Load Balancer with listeners and target groups to route traffic to ECS tasks
+- **ECR**: Docker image repository for storing application images
+- **ECS**: Cluster with services and task definitions running the containerized application
+- **IAM**: Roles for ECS tasks and ALB to control access and permissions
+- **Route 53**: Optional DNS records pointing a domain/subdomain to the ALB (currently commented out)
+- **Security Groups**: Network access management for ALB and ECS tasks
+- **VPC**: Public and private subnets, NAT Gateway, Internet Gateway, and route tables for secure networking
 
-* ALB: Application Load Balancer with listeners and target groups to route traffic to ECS tasks
-
-* ECR: Docker image repository for storing your Node app images
-
-* ECS: Cluster with services and task definitions running your Node application
-
-* IAM: Roles for ECS tasks and ALB to control access and permissions
-
-* Route 53: DNS records pointing your domain/subdomain to the ALB
-
-* Security Groups: Network access management for ALB and ECS tasks
-
-* VPC: Public and private subnets, NAT Gateway, internet gateway, and route tables for secure and structured networking
-
-* Modules make the infrastructure modular, reusable, and maintainable.
+- All infrastructure is implemented using **modular, reusable Terraform modules** for maintainability and environment separation.
 
 
 
 ## Application
 
-Dockerfile & docker-compose.yaml: Builds and runs the Node.js app container
+- **Dockerfile / docker-compose.yaml**: Defines how the Node.js application container is built and run locally
+- **app/threat-composer/**: Main application code
+- **app/backend/**: Backend logic with Node.js dependencies
 
-app/threat-composer/: Main application code
+Docker images are built and pushed to Amazon ECR via GitHub Actions and tagged per environment (`dev-latest`, `prod-latest`).
 
-app/backend/: Backend logic with lib/index.js and Node.js dependencies
-
-Docker images are built and pushed to ECR via GitHub Actions, using commit SHA tags for versioning
 
 
 
@@ -234,27 +234,31 @@ Docker images are built and pushed to ECR via GitHub Actions, using commit SHA t
 
 ### CI/CD Pipeline
 
-#### CI Workflow (docker-ci-dev.yml / docker-ci-prod.yml)
+#### Docker CI Workflows (`docker-ci-dev.yml` / `docker-ci-prod.yml`)
 
 1. Checks out code from the repository
+2. Lints the Dockerfile
+3. Builds Docker images
+4. Pushes images to Amazon ECR
+5. Updates the ECS service with the new image
 
-2. Builds Docker image from /app
+#### Terraform CD Workflows (`terraform-ci-dev.yml` / `terraform-ci-prod.yml`)
 
-3. Scans image for vulnerabilities
+1. Runs Terraform init, plan, and apply
+2. Provisions or updates AWS infrastructure
+3. Deploys ECS services using AWS Fargate
+4. Supports zero-downtime updates via ECS rolling deployments
 
-4. Pushes Docker image to ECR
+#### Manual Terraform Destroy
 
-#### CD Workflow (terraform-ci-dev.yml / terraform-ci-prod.yml)
+- `terraform-ci-dev-destroy.yml`
+- `terraform-ci-prod-destroy.yml`
 
-1. Runs Terraform plan and apply for infrastructure changes
+Destroy workflows are **manually triggered** to safely tear down environments.
 
-2. Updates ECS service with new Docker image (commit SHA)
 
-3. Performs zero-downtime deployments via ECS Fargate
 
-#### Optional: Manual Destroy (manual-destroy.yml)
 
-* Allows you to destroy resources safely if needed
 
 ### Manual Terraform Commands
 
@@ -264,16 +268,13 @@ terraform init
 terraform plan
 terraform apply -auto-approve
 ```` 
-
 ### Running Locally
-You can run the Node.js app locally using Docker to test your setup before deploying to AWS:
 
 #### 1. Build the Docker image
 
 ```bash
-cd app
-docker build -t threat-composer-local:latest .
-```` 
+docker build -t threat-composer-local:latest -f docker/Dockerfile .
+````
 
 #### 2. Run Container
 
@@ -300,29 +301,22 @@ curl http://localhost:8080/health
 
 
 
-
 ## Help
 
-* If the Docker port is already in use:
+- If port `8080` is already in use when running the container locally:
 
 ```bash
 lsof -i :8080
-kill -9 <PID>
+kill <PID>
 ````
-
-
 
 
 
 ## Notes
 
-* Ensure Terraform remote state bucket exists if using S3 backend
-
-* ACM and Route53 modules are optional; comment them out if you don’t have a domain
-
-
-
-
+- Terraform uses a remote S3 backend with DynamoDB state locking
+- Ensure the Terraform remote state bucket exists before running workflows
+- ACM and Route53 modules are optional and can be commented out if no domain is configured
 
 
 
@@ -332,7 +326,7 @@ kill -9 <PID>
 
 ## Authors
 
-* Ramzan [Your Contact/LinkedIn]
+* Ramzan [www.linkedin.com/in/ramzan-k]
 
 * GitHub: https://github.com/Ramzan9000
 
@@ -370,6 +364,7 @@ kill -9 <PID>
 * Docker Official Documentation
 
 * Inspiration from containerized application deployment best practices
+
 
 
 
